@@ -1,0 +1,26 @@
+﻿# Project structure
+self-arguing-analyst/
+â”œâ”€â”€ src/
+â”‚   â”œâ”€â”€ __init__.py
+â”‚   â”œâ”€â”€ orchestrator.py
+â”‚   â”œâ”€â”€ agents/
+â”‚   â”‚   â”œâ”€â”€ __init__.py
+â”‚   â”‚   â”œâ”€â”€ base_agent.py
+â”‚   â”‚   â”œâ”€â”€ benign_agent.py
+â”‚   â”‚   â”œâ”€â”€ malicious_agent.py
+â”‚   â”‚   â””â”€â”€ skeptic_agent.py
+â”‚   â”œâ”€â”€ schemas/
+â”‚   â”‚   â”œâ”€â”€ __init__.py
+â”‚   â”‚   â”œâ”€â”€ evidence.py
+â”‚   â”‚   â”œâ”€â”€ claims.py
+â”‚   â”‚   â””â”€â”€ convergence.py
+â”‚   â”œâ”€â”€ convergence_engine.py
+â”‚   â”œâ”€â”€ evidence_extractor.py
+â”‚   â””â”€â”€ utils/
+â”‚       â”œâ”€â”€ __init__.py
+â”‚       â””â”€â”€ validation.py
+â”œâ”€â”€ tests/
+â”œâ”€â”€ config/
+â”œâ”€â”€ artifacts/
+â”œâ”€â”€ requirements.txt
+â””â”€â”€ README.md
