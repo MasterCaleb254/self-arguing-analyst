@@ -1,0 +1,39 @@
+# monitoring/alert.rules.yml
+groups:
+  - name: self_arguing_alerts
+    rules:
+      - alert: HighErrorRate
+        expr: rate(agent_errors_total[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error rate in agent processing"
+          description: "Error rate is {{ $value }} per second"
+
+      - alert: HighUncertaintyRate
+        expr: uncertainty_rate > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High uncertainty rate in decisions"
+          description: "{{ $value }}% of decisions are UNCERTAIN"
+
+      - alert: QueueBacklog
+        expr: analysis_queue_size > 100
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Analysis queue backlog"
+          description: "Queue size is {{ $value }}"
+
+      - alert: HighProcessingTime
+        expr: analysis_duration_seconds{quantile="0.9"} > 30
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High analysis processing time"
+          description: "90th percentile processing time is {{ $value }} seconds"
