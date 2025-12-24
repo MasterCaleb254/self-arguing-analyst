@@ -160,7 +160,7 @@ git push origin main
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/self-arguing-analyst.git
+git clone https://github.com/MasterCaleb254/self-arguing-analyst.git
 cd self-arguing-analyst
 
 # Install dependencies
