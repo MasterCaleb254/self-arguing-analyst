@@ -1,0 +1,14 @@
+# k8s/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: self-arguing-config
+  namespace: self-arguing-analyst
+data:
+  LOG_LEVEL: "INFO"
+  STORAGE_PATH: "/app/artifacts"
+  CACHE_PATH: "/app/cache"
+  MODEL: "gpt-4-turbo-preview"
+  CONSENSUS_THRESHOLD: "0.2"
+  JACCARD_THRESHOLD: "0.2"
+  RESIDUAL_DISAGREEMENT_THRESHOLD: "0.35"
