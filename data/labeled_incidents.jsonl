@@ -1,0 +1,3 @@
+{"id": "1", "text": "User downloaded file from malicious.com and executed it. File hash matches known malware. Antivirus triggered.", "label": "MALICIOUS"}
+{"id": "2", "text": "System administrator performed routine maintenance during off-hours. All actions logged and approved.", "label": "BENIGN"}
+{"id": "3", "text": "Unknown process observed connecting to multiple IPs. No malware detected. User claims it's a research tool.", "label": null}
