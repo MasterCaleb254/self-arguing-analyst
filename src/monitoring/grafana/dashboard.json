@@ -1,0 +1,57 @@
+{
+    "dashboard": {
+        "title": "Self-Arguing Multi-Agent Analyst",
+        "panels": [
+            {
+                "title": "Analysis Throughput",
+                "type": "stat",
+                "targets": [
+                    {
+                        "expr": "rate(analysis_requests_total{status=\"completed\"}[5m])",
+                        "legendFormat": "Requests/sec"
+                    }
+                ]
+            },
+            {
+                "title": "Decision Distribution",
+                "type": "piechart",
+                "targets": [
+                    {
+                        "expr": "sum by (decision_type) (decisions_total)",
+                        "legendFormat": "{{decision_type}}"
+                    }
+                ]
+            },
+            {
+                "title": "Residual Disagreement",
+                "type": "gauge",
+                "targets": [
+                    {
+                        "expr": "residual_disagreement",
+                        "legendFormat": "Current"
+                    }
+                ]
+            },
+            {
+                "title": "Agent Errors",
+                "type": "barchart",
+                "targets": [
+                    {
+                        "expr": "sum by (agent_type) (rate(agent_errors_total[5m]))",
+                        "legendFormat": "{{agent_type}}"
+                    }
+                ]
+            },
+            {
+                "title": "Processing Time Percentiles",
+                "type": "heatmap",
+                "targets": [
+                    {
+                        "expr": "histogram_quantile(0.95, rate(analysis_duration_seconds_bucket[5m]))",
+                        "legendFormat": "95th percentile"
+                    }
+                ]
+            }
+        ]
+    }
+}
