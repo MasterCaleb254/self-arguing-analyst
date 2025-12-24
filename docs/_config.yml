@@ -1,0 +1,37 @@
+# docs/_config.yml
+title: "Self-Arguing Multi-Agent Analyst"
+description: "Epistemic disagreement as a first-class signal in cybersecurity incident analysis"
+baseurl: "/self-arguing-analyst"
+url: "https://mastercaleb254.github.io"
+github_username: "mastercaleb254"
+repository: "mastercaleb254/self-arguing-analyst"
+
+# Minimal theme - just what we need
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Build settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+
+# Navigation
+header_pages:
+  - index.md
+  - architecture.md
+  - api.md
+  - decisions.md
+  - experiments.md
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/

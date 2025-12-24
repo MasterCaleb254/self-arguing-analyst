@@ -1,0 +1,183 @@
+<!-- docs/_layouts/default.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }} | {{ site.title }}</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #222222;
+            --accent-color: #0066cc;
+            --border-color: #eaeaea;
+            --code-bg: #f6f8fa;
+        }
+        
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0d1117;
+                --text-color: #c9d1d9;
+                --accent-color: #58a6ff;
+                --border-color: #30363d;
+                --code-bg: #161b22;
+            }
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+        
+        header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        
+        h1, h2, h3, h4 {
+            margin-top: 2em;
+            margin-bottom: 0.5em;
+        }
+        
+        h1 { font-size: 2.5em; }
+        h2 { font-size: 1.8em; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3em; }
+        h3 { font-size: 1.4em; }
+        
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        code {
+            background: var(--code-bg);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 0.9em;
+        }
+        
+        pre code {
+            padding: 1em;
+            display: block;
+            overflow-x: auto;
+            line-height: 1.4;
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            margin: 1em 0;
+            padding-left: 1em;
+            color: #666;
+            font-style: italic;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 2em 0;
+        }
+        
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 0.5em 1em;
+            text-align: left;
+        }
+        
+        th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+        
+        nav {
+            margin: 2em 0;
+        }
+        
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1em;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .nav-links a {
+            padding: 0.5em 1em;
+            background: var(--code-bg);
+            border-radius: 4px;
+        }
+        
+        .home-link {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        footer {
+            margin-top: 4em;
+            padding-top: 2em;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.2em 0.6em;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        
+        .status-ready { background: #d4edda; color: #155724; }
+        .status-progress { background: #fff3cd; color: #856404; }
+        .status-experimental { background: #f8d7da; color: #721c24; }
+    </style>
+    {% if page.description %}
+    <meta name="description" content="{{ page.description }}">
+    {% endif %}
+</head>
+<body>
+    <header>
+        <a href="{{ site.baseurl }}/" class="home-link">{{ site.title }}</a>
+        <p>{{ site.description }}</p>
+    </header>
+    
+    <nav>
+        <ul class="nav-links">
+            {% for page_path in site.header_pages %}
+                {% assign page_item = site.pages | where: "path", page_path | first %}
+                {% if page_item.title %}
+                    <li><a href="{{ page_item.url | relative_url }}">{{ page_item.title }}</a></li>
+                {% endif %}
+            {% endfor %}
+            <li><a href="https://github.com/{{ site.github_username }}/{{ site.repository | split: '/' | last }}">GitHub</a></li>
+        </ul>
+    </nav>
+    
+    <main>
+        {{ content }}
+    </main>
+    
+    <footer>
+        <p>
+            <strong>{{ site.title }}</strong> — {{ site.description }}<br>
+            Source: <a href="https://github.com/{{ site.github_username }}/{{ site.repository | split: '/' | last }}">GitHub</a> |
+            License: MIT
+        </p>
+        <p>
+            This is documentation-as-a-site. The code remains the engine; this page becomes the dashboard.
+        </p>
+    </footer>
+</body>
+</html>

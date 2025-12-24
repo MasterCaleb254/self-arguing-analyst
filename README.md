@@ -74,6 +74,44 @@ When agents cannot converge through evidence, the system outputs `UNCERTAIN` rat
 └─────────────────────────────────────────────────────────────┘
 ```
 
+## 📚 Documentation Website
+
+**Live documentation**: [https://mastercaleb254.github.io/self-arguing-analyst](https://mastercaleb254.github.io/self-arguing-analyst)
+
+This website provides:
+
+- **Architecture Overview**: System design and component interactions
+- **API Reference**: Complete REST API documentation with examples  
+- **Design Decisions**: Engineering choices and trade-offs explained
+- **Experiment Results**: Measured outcomes with reproducible data
+- **Deployment Guides**: From local development to production Kubernetes
+
+**Why a separate website?**
+- README = entry point for developers
+- Website = entry point for readers, reviewers, and integrators
+- Two interfaces, one system
+
+The website is built with GitHub Pages using the `/docs` directory. It's automatically deployed from the `main` branch.
+
+---
+
+## 🚀 Quick Deployment
+
+```bash
+# Set up documentation site
+./deploy-docs.sh
+
+# Commit and push
+git add docs/ README.md
+git commit -m "Add GitHub Pages documentation"
+git push origin main
+
+# Then enable GitHub Pages in repository settings:
+# Settings → Pages → Source: main branch /docs folder
+```
+
+**Your site will be live at**: `https://mastercaleb254.github.io/self-arguing-analyst`
+
 ## ✨ Features
 
 ### 🔍 Multi-Agent Analysis
