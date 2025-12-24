@@ -1,30 +1,28 @@
 # src/agents/base_agent.py
-from abc import ABC, abstractmethod
+
 from typing import Dict, Any, List
 import json
 from openai import OpenAI
 from tenacity import retry, stop_after_attempt, wait_exponential
 
-from src.schemas.evidence import EvidenceExtraction, EvidenceItem, SourceSpan
+from src.schemas.evidence import EvidenceExtraction, EvidenceItem, SourceSpan, EvidenceType
+from src.roles.registry import Role
 from src.schemas.claims import AgentClaims, Claim, ClaimDirection, Gap
 from src.config.settings import settings
 
-class BaseAgent(ABC):
-    def __init__(self, agent_id: str):
-        self.agent_id = agent_id
+class BaseAgent:
+    def __init__(self, role: Role, agent_id: str = None):
+        self.role = role
+        self.agent_id = agent_id or role.name
         self.client = OpenAI(api_key=settings.openai_api_key)
         self.model = settings.openai_model
         self.temperature = settings.agent_temperature
         
-    @abstractmethod
     def get_system_prompt_evidence(self) -> str:
-        """Get system prompt for evidence extraction"""
-        pass
-        
-    @abstractmethod
+        return self.role.evidence_extraction_system_prompt
+
     def get_system_prompt_claims(self) -> str:
-        """Get system prompt for claims generation"""
-        pass
+        return self.role.claims_generation_system_prompt
     
     @retry(
         stop=stop_after_attempt(settings.max_retries),

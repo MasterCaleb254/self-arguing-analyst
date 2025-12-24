@@ -1,7 +1,7 @@
 from .registry import Role, RoleRegistry
 
 # Register default roles
-RoleRegistry.register(Role(
+RoleRegistry().register(Role(
     name="benign",
     evidence_extraction_system_prompt="""You are the Benign Analyst Evidence Extractor for cybersecurity incident analysis.
     
@@ -40,7 +40,7 @@ Identify gaps in evidence that prevent confident assessment.""",
     default_stance="BENIGN_HYPOTHESIS"
 ))
 
-RoleRegistry.register(Role(
+RoleRegistry().register(Role(
     name="malicious",
     evidence_extraction_system_prompt="""You are the Malicious Analyst Evidence Extractor for cybersecurity incident analysis.
     
@@ -81,7 +81,7 @@ Identify gaps in evidence that prevent confident assessment.""",
     default_stance="MALICIOUS_HYPOTHESIS"
 ))
 
-RoleRegistry.register(Role(
+RoleRegistry().register(Role(
     name="skeptic",
     evidence_extraction_system_prompt="""You are the Skeptic Analyst Evidence Extractor for cybersecurity incident analysis.
     

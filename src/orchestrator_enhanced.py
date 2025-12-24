@@ -5,7 +5,7 @@ import asyncio
 from uuid import UUID
 
 from src.orchestrator import EventOrchestrator
-from src.roles.registry import RoleRegistry, RoleConfiguration
+from src.roles.registry import RoleRegistry, Role
 from src.enrichment.mitre_attack import MITREATTACKEnricher
 
 @dataclass
@@ -73,24 +73,10 @@ class EnhancedOrchestrator(EventOrchestrator):
         
         return agents
     
-    def _create_agent(self, role_config: RoleConfiguration):
+    def _create_agent(self, role_config: Role):
         """Create an agent instance from role configuration"""
-        # This would need integration with the BaseAgent class
-        # For now, using a simplified approach
         from src.agents.base_agent import BaseAgent
-        
-        class ConfigurableAgent(BaseAgent):
-            def __init__(self, config: RoleConfiguration):
-                super().__init__(config.name)
-                self.role_config = config
-            
-            def get_system_prompt_evidence(self) -> str:
-                return self.role_config.system_prompt_evidence
-            
-            def get_system_prompt_claims(self) -> str:
-                return self.role_config.system_prompt_claims
-        
-        return ConfigurableAgent(role_config)
+        return BaseAgent(role=role_config)
     
     async def analyze_incident_enhanced(self, incident_text: str, 
                                        event_id: Optional[UUID] = None) -> Dict:
