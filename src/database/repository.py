@@ -69,4 +69,102 @@ class AnalysisRepository:
             evidence_overlap_malicious_skeptic=metrics.get("malicious_skeptic", 0.0),
             triple_intersection_count=metrics.get("triple_intersection_count", 0),
             disagreement_entropy=metrics.get("disagreement_entropy", 0.0),
-            mean_confidence=metrics.get("mean_confidence", 0.
+            mean_confidence=metrics.get("mean_confidence", 0.0),
+            confidence_variance=metrics.get("variance_confidence", 0.0),
+            residual_disagreement=metrics.get("residual_disagreement", 0.0),
+            decision_label=metrics.get("decision_label"),
+            decision_confidence=metrics.get("decision_confidence"),
+            reason_codes=metrics.get("reason_codes", [])
+        )
+        
+        self.session.add(convergence)
+    
+    def get_event(self, event_id: str) -> Optional[AnalysisEvent]:
+        """Get event by ID"""
+        return self.session.query(AnalysisEvent).filter_by(id=event_id).first()
+    
+    def get_event_with_details(self, event_id: str) -> Optional[Dict]:
+        """Get event with all related data"""
+        event = self.get_event(event_id)
+        if not event:
+            return None
+        
+        # Get agent analyses
+        agents = self.session.query(AgentAnalysis).filter_by(event_id=event_id).all()
+        
+        # Get convergence metrics
+        convergence = self.session.query(ConvergenceMetrics).filter_by(event_id=event_id).first()
+        
+        return {
+            "event": event,
+            "agents": agents,
+            "convergence": convergence
+        }
+    
+    def get_recent_events(self, limit: int = 100) -> List[AnalysisEvent]:
+        """Get recent analysis events"""
+        return self.session.query(AnalysisEvent)\
+            .order_by(desc(AnalysisEvent.submitted_at))\
+            .limit(limit)\
+            .all()
+    
+    def get_events_by_status(self, status: str) -> List[AnalysisEvent]:
+        """Get events by status"""
+        return self.session.query(AnalysisEvent)\
+            .filter_by(status=status)\
+            .order_by(desc(AnalysisEvent.submitted_at))\
+            .all()
+    
+    def get_statistics(self, days: int = 30) -> Dict[str, Any]:
+        """Get system statistics"""
+        cutoff_date = datetime.utcnow() - timedelta(days=days)
+        
+        # Total events
+        total = self.session.query(func.count(AnalysisEvent.id))\
+            .filter(AnalysisEvent.submitted_at >= cutoff_date)\
+            .scalar()
+        
+        # Events by status
+        status_counts = self.session.query(
+            AnalysisEvent.status,
+            func.count(AnalysisEvent.id)
+        ).filter(AnalysisEvent.submitted_at >= cutoff_date)\
+         .group_by(AnalysisEvent.status)\
+         .all()
+        
+        # Events by label
+        label_counts = self.session.query(
+            AnalysisEvent.final_label,
+            func.count(AnalysisEvent.id)
+        ).filter(
+            AnalysisEvent.submitted_at >= cutoff_date,
+            AnalysisEvent.final_label.isnot(None)
+        ).group_by(AnalysisEvent.final_label)\
+         .all()
+        
+        # Average processing time
+        avg_time = self.session.query(
+            func.avg(
+                func.extract('epoch', AnalysisEvent.completed_at) - 
+                func.extract('epoch', AnalysisEvent.submitted_at)
+            )
+        ).filter(
+            AnalysisEvent.completed_at.isnot(None),
+            AnalysisEvent.submitted_at >= cutoff_date
+        ).scalar()
+        
+        # Uncertainty rate
+        uncertain_count = self.session.query(func.count(AnalysisEvent.id))\
+            .filter(
+                AnalysisEvent.final_label == "UNCERTAIN",
+                AnalysisEvent.submitted_at >= cutoff_date
+            )\
+            .scalar()
+        
+        return {
+            "total_events": total or 0,
+            "status_distribution": dict(status_counts),
+            "label_distribution": dict(label_counts),
+            "uncertainty_rate": uncertain_count / total if total > 0 else 0,
+            "avg_processing_time_seconds": avg_time or 0
+        }
